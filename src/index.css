@@ -5,5 +5,24 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #333583 !important;
+  background:  #015384 !important;
 }
+.lower-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;  
+  border:1px  dotted silver;
+  border-radius:10px;
+}
+.upper-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+
+ 
+}
+.canvas-container {
+  width: 100% !important;
+  height: auto !important;
+}
+/* #333583 #015384*/

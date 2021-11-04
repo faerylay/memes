@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { fabric } from 'fabric';
-import { Box, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+
+import { Box, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 import { Image } from '@mui/icons-material';
 import muiStyles from '../muiStyles';
 
-
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAllMemes, fetchMemes } from '../memesSlice';
 
 
 
 export default function MemesLists({ canvas }) {
-
   const classes = muiStyles();
   const dispatch = useDispatch();
 
@@ -24,11 +22,6 @@ export default function MemesLists({ canvas }) {
   const [data, setData] = useState('');
   const [searchQuery, setSearchQuery] = useState('')
 
-  const updateInput = (event) => {
-    const filtered = memesListDefault.filter(meme => (meme.name.toLowerCase().includes(event.toLowerCase())))
-    setSearchQuery(event);
-    setData(filtered)
-  }
 
   useEffect(() => {
     if (memesStatus === 'idle') {
@@ -39,10 +32,15 @@ export default function MemesLists({ canvas }) {
 
 
 
+  const updateInput = (event) => {
+    const filtered = memesListDefault.filter(meme => (meme.name.toLowerCase().includes(event.toLowerCase())))
+    setSearchQuery(event);
+    setData(filtered)
+  }
 
   const [open, setOpen] = useState(false);
   const [colors, setColors] = useState(null);
-  const [test, setTest] = useState('')
+  const [image, setImage] = useState('')
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -53,15 +51,22 @@ export default function MemesLists({ canvas }) {
 
   const handleImg = (e, item) => {
     setColors(item)
-    setTest(e.target.src)
+    setImage(e.target.src)
   }
 
-  const save = (test, canvas) => {
-    new fabric.Image.fromURL(test, (img) => {
-      img.scaleToWidth(canvas.width);
-      img.scaleToHeight(canvas.height);
-      canvas.add(img)
-      // canvas.setBackgroundImage(img);
+
+  let crop = true;
+  const save = (crop, Image, canvas) => {
+    new fabric.Image.fromURL(Image, (img) => {
+      if (crop) {
+        img.scaleToWidth(canvas.width / 1.5);
+        img.scaleToHeight(canvas.height / 1.5);
+        canvas.add(img)
+      } else {
+        img.scaleToWidth(canvas.width);
+        img.scaleToHeight(canvas.height);
+        canvas.setBackgroundImage(img);
+      }
       canvas.renderAll()
     }, {
       left: canvas.getCenter().left,
@@ -76,35 +81,36 @@ export default function MemesLists({ canvas }) {
   }
 
 
+
+
+
   let content;
   if (memesStatus === 'loading') {
     content = <div> <h1>Loading...</h1></div>
   } else if (memesStatus === 'succeeded') {
-
     content = data ? data.map((item, index) => (
-
       <Box className={classes.memesBox} key={index} sx={{
-        height: { xs: 200, sm: 250 },
-        backgroundColor: colors === item ? '#333583' : '#fff',
-        boxShadow: colors === item ? 3 : 0,
-        color: colors === item ? '#fff' : '#000',
+        height: 150,
+        border: 1,
+        borderColor: colors === item ? '#d84315' : 'rgba(240,240,240)',
+        borderStyle: 'solid',
+        boxShadow: colors === item ? 1 : 0,
       }} >
         <h6 className={classes.memesTitle}>{item.name}</h6>
         <div className={classes.imgBox} >
           <img className={classes.memesImg} crossOrigin="anonymous" src={item.url} alt="img" onClick={e => handleImg(e, item)} />
         </div>
       </Box>
-
     )) : (
       memes.map((item, index) => (
-
         <Box className={classes.memesBox} key={index} sx={{
-          height: { xs: 200, sm: 250 },
-          backgroundColor: colors === item ? '#333583' : '#fff',
-          boxShadow: colors === item ? 3 : 0,
-          color: colors === item ? '#fff' : '#000',
+          height: 150,
+          border: 1,
+          borderColor: colors === item ? '#d84315' : 'rgba(240,240,240)',
+          borderStyle: 'solid',
+          boxShadow: colors === item ? 1 : 0,
         }} >
-          <h6 className={classes.memesTitle}>{item.name}</h6>
+          <h6 className={classes.memesTitle}>{item.name} - </h6>
           <div className={classes.imgBox} >
             <img className={classes.memesImg} crossOrigin="anonymous" src={item.url} alt="img" onClick={e => handleImg(e, item)} />
           </div>
@@ -120,7 +126,7 @@ export default function MemesLists({ canvas }) {
     <>
       <Button color="info" variant="outlined" size="small" sx={{ mr: 1, my: 1, flexShrink: 0 }} onClick={handleOpen}>
         <Image sx={{ pr: 1 }} />
-        <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} >Memes Template</Typography>
+        <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} >Template</Typography>
       </Button>
       <Dialog
         maxWidth="xs"
@@ -140,20 +146,25 @@ export default function MemesLists({ canvas }) {
               onChange={(e) => updateInput(e.target.value)}
             />
           </Box>
+          <Divider />
         </DialogTitle>
 
-        <DialogContent  >
+
+        <DialogContent>
           <Box className={classes.memesApi}  >
             {content}
           </Box>
         </DialogContent>
 
         <DialogActions sx={{ boxShadow: 2 }}>
-          <Button color="info" variant="outlined" size="small" sx={{ mr: 1, }} onClick={handleClose} >
+          <Button color="error" variant="outlined" size="small" onClick={handleClose} >
             <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} > Cancel</Typography>
           </Button>
-          <Button color="info" variant="outlined" size="small" sx={{ mr: 1, }} onClick={() => save(test, canvas)} disabled={!Boolean(colors)}>
-            <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} >  Set as Background</Typography>
+          <Button color="info" variant="outlined" size="small" onClick={() => save(crop, image, canvas)} disabled={!Boolean(colors)}>
+            <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} > Crop</Typography>
+          </Button>
+          <Button color="success" variant="outlined" size="small" onClick={() => save(!crop, image, canvas)} disabled={!Boolean(colors)}>
+            <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} > Background</Typography>
           </Button>
         </DialogActions>
       </Dialog>

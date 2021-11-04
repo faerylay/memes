@@ -1,30 +1,30 @@
 import React from 'react'
 import { Paper, Toolbar } from '@mui/material';
-import { DeleteObject, ReUndo, CanvasBackground } from '../Elements';
+import { CanvasBackground, DeleteObject, ObjectBackground, ReUndo } from '../Objects';
 
 export default function CanvasBottomTabs({ canvas }) {
   return (
     <React.Fragment>
       <Paper sx={{
-        height: { xs: 45, sm: 345 },
+        height: 45,
         width: { xs: window.innerWidth, sm: '100%' },
         backgroundColor: '#fff',
         position: { xs: 'fixed', sm: 'relative' },
         bottom: 0,
         left: 0,
-        zIndex: 1,
-        pb: 2,
-        mt: 1,
-        boxShadow: 2,
+        zIndex: 10,
+        boxShadow: { xs: 4, sm: 0 },
+        borderRadius: 0,
       }}
       >
         <Toolbar component="nav" variant="dense" sx={{
           display: 'flex',
           overflowX: 'auto',
-          flexWrap: { xs: 'nowrap', sm: 'wrap' },
+          flexWrap: 'nowrap',
+          ml: -2
         }}>
           <CanvasBackground canvas={canvas} />
-
+          <ObjectBackground canvas={canvas} />
           <DeleteObject canvas={canvas} />
           <ReUndo canvas={canvas} />
         </Toolbar>

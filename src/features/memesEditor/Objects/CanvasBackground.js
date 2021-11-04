@@ -1,11 +1,8 @@
 import React from "react";
 import { HexColorPicker } from "react-colorful";
 import { Button, Popover, Box, Typography } from "@mui/material";
-import muiStyles from '../muiStyles';
-
 
 export default function CanvasBackground({ canvas }) {
-  const classes = muiStyles();
   const handleColorChange = (e, canvas) => {
     canvas.setBackgroundColor(`${e}`);
     canvas.renderAll();
@@ -22,8 +19,8 @@ export default function CanvasBackground({ canvas }) {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (
-    <Box className={classes.bottomTabs} >
-      <Button variant="outlined" size="small" onClick={handleClick}>
+    <Box sx={{ display: 'flex', mb: 1, mr: 1 }}>
+      <Button color="info" variant="outlined" size="small" onClick={handleClick}>
         <Typography component="p" fontSize="small">Background.Color</Typography>
       </Button>
       <Popover

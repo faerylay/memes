@@ -1,34 +1,10 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles({
-  canvasPaper: {
-    position: 'relative',
-    border: 1,
-    color: '#fff',
-    marginBottom: 4,
-  },
-  canvasBox: {
-    height: 350,
-    position: 'relative',
-    padding: 3
-  },
-  canvasParent: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-  },
-  canvas: {
-    borderRadius: 3,
-    border: 1,
-    borderColor: 'grey',
-    borderStyle: 'dotted'
-  },
-
-
   bottomTabs: {
     display: 'flex',
     marginRight: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
 
 
@@ -43,14 +19,12 @@ export default makeStyles({
     display: 'flex',
     flexDirection: 'column',
     flex: '48%',
-    border: 1,
-    borderColor: 'silver',
-    borderStyle: 'solid',
     marginRight: 3,
     marginBottom: 3,
     borderRadius: 5,
     padding: 3,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    color: '#000'
   },
   memesTitle: {
     padding: 0,
@@ -68,20 +42,14 @@ export default makeStyles({
     height: '100%',
     verticalAlign: 'middle',
   },
-
-
   input: {
     width: '100%',
     height: 40,
-    paddingLeft: 10
+    paddingLeft: 10,
+    borderRadius: 5,
+    border: 'none'
   },
-  inputFile: {
-    display: 'none'
-  },
-  fileUpload: {
-    display: 'flex',
-    cursor: 'pointer'
-  },
+
 
 
 

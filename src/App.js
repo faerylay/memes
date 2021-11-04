@@ -1,6 +1,13 @@
 import React from 'react';
 import { MemeEditor } from './Page'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom'
+
+
 function App() {
   return (
     <Router>

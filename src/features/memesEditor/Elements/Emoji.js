@@ -1,7 +1,7 @@
 import React from 'react';
 import { fabric } from 'fabric';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from "emoji-picker-react";
-import { Typography, Button, Popover } from '@mui/material';
+import { Typography, Button, Popover, Box } from '@mui/material';
 import { EmojiEmotionsOutlined } from '@mui/icons-material';
 export default function Emoji({ canvas }) {
 
@@ -17,21 +17,15 @@ export default function Emoji({ canvas }) {
 
 
 
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleClick = (event) => setAnchorEl(event.currentTarget)
+  const handleClose = () => setAnchorEl(null);
 
 
   return (
-    <div>
+    <Box>
       <Button color="info" variant="outlined" size="small" sx={{ mr: 1, my: 1, flexShrink: 0 }} onClick={handleClick}>
         <EmojiEmotionsOutlined sx={{ pr: 1 }} />
         <Typography sx={{ fontSize: { xs: 11, sm: 13 }, fontWeight: 'bold' }} >Emoji</Typography>
@@ -57,12 +51,7 @@ export default function Emoji({ canvas }) {
           groupNames={{ smileys_people: "PEOPLE" }}
           native
         />
-
       </Popover>
-
-
-
-
-    </div>
+    </Box>
   )
 }
